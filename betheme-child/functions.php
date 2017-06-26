@@ -64,21 +64,24 @@ class Paginator {
 
 	public function __construct($query) {
 		$this->_query = $query;
+		
 		global $wpdb;
 		$this->_total = count($wpdb->get_results($query)); 
 		// var_dump($this->_total);
+		// var_dump($offset);
 	}
 
-	public function getData( $limit = 10, $page = 1 ) {
-    	// var_dump($this->query);
+	public function getData( $limit = 10, $page = 1, $offset = null) {
     	$this->_limit = $limit;
     	$this->_page = $page;
-		
+    	$this->_offset = $offset;
 
     	if ($this->_limit == 'all') {
     		$query = $this->_query;
     		// var_dump($query);
-    	} 
+    	} else if ($limit && $offset) {
+    		$query = $this->_query . " LIMIT " . $this->_limit . " OFFSET " . $this->_offset;
+    	}
     	else {
     		$query = $this->_query . " LIMIT " . ( ($this->_page - 1 ) * $this->_limit) . ", $this->_limit";
 			// var_dump($query);
@@ -135,13 +138,13 @@ class Paginator {
         	$html   .= '<li class="' . $class . '"><a href="?limit=' . $this->_limit . '&9463=' . $i . '">' . $i . '</a></li>';
     	}
 
-    	// if ( $end < $last ) {
-	        // $html   .= '<li class="disabled"><span>...</span></li>';
-	        // $html   .= '<li><a href="?limit=' . $this->_limit . '&page=' . $last . '">' . $last . '</a></li>';
-    	// }
+    	if ( $end < $last ) {
+	        $html   .= '<li class="disabled"><span>...</span></li>';
+	        $html   .= '<li><a href="?limit=' . $this->_limit . '&9463=' . $last . '">' . $last . '</a></li>';
+    	}
 
-    	// $class      = ( $this->_page == $last ) ? "disabled" : "";
-    	// $html       .= '<li class="' . $class . '"><a href="?limit=' . $this->_limit . '&page=' . ( $this->_page + 1 ) . '">&raquo;</a></li>';
+    	$class      = ( $this->_page == $last ) ? "disabled" : "";
+    	$html       .= '<li class="' . $class . '"><a href="?limit=' . $this->_limit . '&9463=' . ( $this->_page + 1 ) . '">&raquo;</a></li>';
  	
 	    $html       .= '</ul>';
  
@@ -157,9 +160,6 @@ function getFeed() {
      
     $feeds_url = [
     		'https://trustdentalcare.com/feed/',
-    		'https://trustdentalcare.com/feed/?paged=2',
-    		'https://trustdentalcare.com/feed/?paged=3',
-    		'https://trustdentalcare.com/feed/?paged=4',
     		'https://serenasandiegodentist.com/feed/',
     		'http://cosmeticdentistinsandiego.com/blog/feed/'];
 
@@ -213,29 +213,45 @@ function insertFeed($feed) {
 	displayFeed();
 }
 
-function displayFeed() {
+function displayFeed($atts) {
+
+	$atts = shortcode_atts(
+		array(
+			'pagination' => 'no',
+			'offset'	=> null,
+			), $atts, 'Feed');
+
+	
 	$Paginator = new Paginator("SELECT * FROM rss_feeds ORDER BY date DESC");
-	$page       = $_GET['9463'];
-	$results = $Paginator->getData(5, $page);
+
+	$page       = ( isset( $_GET['9463'] ) ) ? $_GET['9463'] : 1;
+	$limit       = ( isset( $_GET['limit'] ) ) ? $_GET['limit'] : 6;
+
+	if ($atts['offset']) {
+		$results = $Paginator->getData($limit, $page, $atts['offset']);
+	} else {
+		$results = $Paginator->getData($limit, $page);
+	}
 
 	foreach ($results->data as $post) {
 		
 	 	?>
 		
 	 	
-	 		<div class="post column mcb-column one-third">
+	 		<div class="post">
 	 			<div class="post-image">
 	 				<a href="<?=$post->link?>"><img src="<?=$post->image?>"></a>
 	 			</div>
 	 			<h4><a href="<?=$post->link?>"><?=$post->title?></a></h4>
-	 			
 	 		</div>
 	 	
 
 		<?php
 	 }
-
-	echo $Paginator->create_links(7, 'list_class');
+	
+	 if ($atts['pagination'] == 'yes') {
+		echo $Paginator->create_links(7, 'paginator_nums');
+	 }
 
 }
 
@@ -253,6 +269,6 @@ function firstImg( $post_content ) {
 }
 
 
-add_shortcode( 'Feed', 'getFeed' );
+add_shortcode( 'Feed', 'displayFeed' );
 
 
