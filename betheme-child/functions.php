@@ -63,43 +63,37 @@ class Paginator {
 	private $_total;
 
 	public function __construct($query) {
+
 		$this->_query = $query;
 		
 		global $wpdb;
 		$this->_total = count($wpdb->get_results($query)); 
-		// var_dump($this->_total);
-		// var_dump($offset);
+	
 	}
 
 	public function getData( $limit = 10, $page = 1, $offset = null) {
+
     	$this->_limit = $limit;
     	$this->_page = $page;
     	$this->_offset = $offset;
 
     	if ($this->_limit == 'all') {
     		$query = $this->_query;
-    		// var_dump($query);
     	} else if ($limit && $offset) {
     		$query = $this->_query . " LIMIT " . $this->_limit . " OFFSET " . $this->_offset;
     	}
     	else {
     		$query = $this->_query . " LIMIT " . ( ($this->_page - 1 ) * $this->_limit) . ", $this->_limit";
-			// var_dump($query);
     	}
 
     	global $wpdb;
 		$rs = $wpdb->get_results($query);
 
-		// while ( $row = $rs->fetch_assoc() ) {
-  //       $results[]  = $row;
-  //   	}
 		$results = array();
     	foreach ($rs as $row) {
     		array_push($results, $row);
     	}
 
-    	// var_dump($results);	
-		
 		$result         = new stdClass();
 	    $result->page   = $this->_page;
 	    $result->limit  = $this->_limit;
@@ -112,7 +106,7 @@ class Paginator {
     }
 
     public function create_links($links, $list_class) {
-    	// var_dump($links);
+
     	if( $this->_limit == 'all' ) {
     		return '';
     	}
@@ -164,7 +158,7 @@ function getFeed() {
     		'http://cosmeticdentistinsandiego.com/blog/feed/'];
 
     foreach ($feeds_url as $feed_url) {
-    	# code...
+    	
 	    $rss = new DOMDocument();
 	    $rss->load($feed_url);
 
