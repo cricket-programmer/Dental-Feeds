@@ -213,13 +213,21 @@ function displayFeed($atts) {
 		array(
 			'pagination' => 'no',
 			'offset'	=> null,
+			'limit'	=> null
 			), $atts, 'Feed');
 
 	
 	$Paginator = new Paginator("SELECT * FROM rss_feeds ORDER BY date DESC");
 
 	$page       = ( isset( $_GET['9463'] ) ) ? $_GET['9463'] : 1;
-	$limit       = ( isset( $_GET['limit'] ) ) ? $_GET['limit'] : 6;
+
+	if (isset($_GET['limit'])) {
+		$limit = $_GET['limit'];
+	} else if (isset($atts['limit'])) {
+		$limit = $atts['limit'];
+	} else {
+		$limit = 6;
+	}
 
 	if ($atts['offset']) {
 		$results = $Paginator->getData($limit, $page, $atts['offset']);
