@@ -154,6 +154,9 @@ function getFeed() {
      
     $feeds_url = [
     		'https://trustdentalcare.com/feed/',
+    		'https://trustdentalcare.com/feed/?paged=2',
+    		'https://trustdentalcare.com/feed/?paged=3',
+    		'https://trustdentalcare.com/feed/?paged=4',
     		'https://serenasandiegodentist.com/feed/',
     		'http://cosmeticdentistinsandiego.com/blog/feed/'];
 
@@ -169,7 +172,7 @@ function getFeed() {
 	    }
 
 	    foreach ($rss->getElementsByTagName('item') as $node) {
-	    
+	   		
 	        $item = array (
 	                'title' => $node->getElementsByTagName('title')->item(0)->nodeValue,
 	                'link' => $node->getElementsByTagName('link')->item(0)->nodeValue,
@@ -179,19 +182,24 @@ function getFeed() {
 	                'image' => firstImg($node->getElementsByTagName('encoded')->item(0)->nodeValue)
 	                );
 	        array_push($feed, $item);
+	        
 	    }
 
     }
+    // insert feed method
     insertFeed($feed);
 }
 
 function insertFeed($feed) {
+	// incert feed in the database
 	foreach ($feed as $entry) {
 		global $wpdb;
 		$result = $wpdb->get_results( "SELECT * FROM rss_feeds WHERE title = '" . $entry['title'] . "'");
+		// if feed already exist don't do nothinf
 		if ($result) {
 			
 		} else {
+			// if feed non't exist insert in to rss_feeds table
 			$wpdb->insert( 
 				'rss_feeds', 
 				[
@@ -200,15 +208,18 @@ function insertFeed($feed) {
 				'date' => $entry['pubDate'],
 				'content' => $entry['content'],
 				'description' => $entry['description'],
-				'image' => $entry['image']
-				]);
+				'image' => $entry['image'],
+				'source' => getSource($entry['link'])]);
 		}
 	}
-	displayFeed();
+	// dislpay feed in html
+	// displayFeed();
 }
 
+// display feed in html 
 function displayFeed($atts) {
-
+	
+	// get the atts for the short code and convert in assoc array
 	$atts = shortcode_atts(
 		array(
 			'pagination' => 'no',
@@ -216,47 +227,57 @@ function displayFeed($atts) {
 			'limit'	=> null
 			), $atts, 'Feed');
 
-	
+	// new instance of paginator whith a mysql query like parameter
 	$Paginator = new Paginator("SELECT * FROM rss_feeds ORDER BY date DESC");
 
+	// if 9463 page var is set page = this var
 	$page       = ( isset( $_GET['9463'] ) ) ? $_GET['9463'] : 1;
 
 	if (isset($_GET['limit'])) {
+		// if iset GET limit var limit = this var
 		$limit = $_GET['limit'];
 	} else if (isset($atts['limit'])) {
+		// if shortcode has limit parameter limit = this parameter
 		$limit = $atts['limit'];
 	} else {
+		// limit isn't set limit default = 6 
 		$limit = 6;
 	}
 
+	// if offset atribute is set on the shortcode add this value and send it like param to getData() method
 	if ($atts['offset']) {
 		$results = $Paginator->getData($limit, $page, $atts['offset']);
 	} else {
+		// else call the method getData() whitout offset parameter
 		$results = $Paginator->getData($limit, $page);
 	}
 
+	// for each element in results array build new post structure
 	foreach ($results->data as $post) {
 		
 	 	?>
 		
-	 	
+	 		<!-- structure posts feed -->
 	 		<div class="post">
 	 			<div class="post-image">
 	 				<a href="<?=$post->link?>"><img src="<?=$post->image?>"></a>
 	 			</div>
 	 			<h4><a href="<?=$post->link?>"><?=$post->title?></a></h4>
+	 			<span><a href="<?=$post->source?>"><?=$post->source?></a></span>
 	 		</div>
 	 	
 
 		<?php
 	 }
 	
+	// if paginator atribute is set on the shortcode then display pagination
 	 if ($atts['pagination'] == 'yes') {
 		echo $Paginator->create_links(7, 'paginator_nums');
 	 }
 
 }
 
+// get the firt image in the content of the post and return the url
 function firstImg( $post_content ) {
     $matches = array();
     $output = preg_match_all( '/<img.+src=[\'"]([^\'"]+)[\'"].*>/i', $post_content, $matches );
@@ -270,7 +291,13 @@ function firstImg( $post_content ) {
     return $first_img;
 }
 
+function getSource($url) {
+	$protocoles = array('http://', 'https://', 'ftp://', 'www.');
+    $url = explode('/', str_replace($protocoles, '', $url));
+    return $url[0];
+}
 
+// short code to display feed
 add_shortcode( 'Feed', 'displayFeed' );
 
 

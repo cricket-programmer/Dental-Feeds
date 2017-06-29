@@ -10,6 +10,27 @@ Version: 		1.6.1
 
 /* Theme customization starts here
 -------------------------------------------------------------- */
+.custom-header {
+	display: flex;
+    justify-content: space-around;
+    align-items: center;
+}
+.custom-header .contact a {
+	color: #666;
+    vertical-align: top;
+} 
+.custom-header .contact a img {
+	margin: 0 2px;
+} 
+.custom-header .search form .icon_close,
+.custom-header .search form .icon_search {
+	display: none;
+}
+.custom-header .search form input {
+	margin: 0;
+}
+
+
 
 .blog-teaser .photo-wrapper img {
 	max-width: none;
@@ -19,12 +40,17 @@ Version: 		1.6.1
 .posts > div {
 	display: flex;
     flex-wrap: wrap;
+    justify-content: center;
 }
 
 .posts .post {
 	width: 30%;
+	min-width: 300px;
 	margin: 10px;
 	border: solid 1px #b7b7b7;
+	display: flex;
+    flex-direction: column;
+    justify-content: space-between;
 }
 .posts .post .post-image {
 	width: 100%;
@@ -42,6 +68,12 @@ Version: 		1.6.1
 }
 .posts .post h4 a {
 	color: #f73e4d!important;
+}
+.posts .post span {
+	padding: 10px 20px;
+}
+.posts .post span a {
+	color: #ccc!important;
 }
 .paginator_nums li {
 	display: inline-block;
