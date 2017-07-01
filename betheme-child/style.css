@@ -10,14 +10,31 @@ Version: 		1.6.1
 
 /* Theme customization starts here
 -------------------------------------------------------------- */
+.blog-teaser li:first-child {
+	width: 67%;
+}
+.blog-teaser li:last-child {
+	margin-top: 0;
+}
+
 .custom-header {
 	display: flex;
     justify-content: space-around;
     align-items: center;
+    padding: 50px 0;
 }
 .custom-header .contact a {
 	color: #666;
     vertical-align: top;
+} 
+.custom-header .contact .tip {
+	background: #f73e4d;
+	color: #fff;
+	padding: 10px;
+	font-weight: bold;
+	text-decoration: none;
+	margin-right: 10px;
+	border-radius: 5px;
 } 
 .custom-header .contact a img {
 	margin: 0 2px;
@@ -28,9 +45,21 @@ Version: 		1.6.1
 }
 .custom-header .search form input {
 	margin: 0;
+	background: #ebebeb;
+    border: 0;
+    border-radius: 5px;
+    padding: 15px;
 }
-
-
+#Top_bar .menu > li > a {
+    padding: 0px 0!important;
+    color: #f73e4d!important;
+}
+#Top_bar .menu > li a:after {
+    background: #f73e4d!important;
+}
+.header-container .menu_wrapper {
+	float: none!important;
+}
 
 .blog-teaser .photo-wrapper img {
 	max-width: none;

@@ -85,6 +85,7 @@
 		
 			<div class="custom-header">
 				<div class="contact">
+					<a href="#" class="tip">got a tip?</a>
 					<a href="mailto:">info@dentalfeeds.com</a>
 					<a href="#"><img src="/wp-content/themes/betheme-child/dental-feeds_social_1.png"></a>
 					<a href="#"><img src="/wp-content/themes/betheme-child/dental-feeds_social_2.png"></a>
