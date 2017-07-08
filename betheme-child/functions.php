@@ -71,18 +71,22 @@ class Paginator {
 	
 	}
 
-	public function getData( $limit = 10, $page = 1, $offset = null) {
+	public function getData( $limit = 10, $page = 1, $offset = null, $source = null) {
+
 
     	$this->_limit = $limit;
     	$this->_page = $page;
     	$this->_offset = $offset;
+    	$this->_source = $source;
 
     	if ($this->_limit == 'all') {
     		$query = $this->_query;
     	} else if ($limit && $offset) {
     		$query = $this->_query . " LIMIT " . $this->_limit . " OFFSET " . $this->_offset;
+    	} else if ($limit && $source) {
+    	$query = "SELECT * FROM rss_feeds WHERE source = '" . $this->_source . "'  ORDER BY date DESC " . " LIMIT " . ( ($this->_page - 1 ) * $this->_limit) . ", $this->_limit";
     	}
-    	else {
+    	else if ($offset == null && $source == null) {
     		$query = $this->_query . " LIMIT " . ( ($this->_page - 1 ) * $this->_limit) . ", $this->_limit";
     	}
 
@@ -154,9 +158,6 @@ function getFeed() {
      
     $feeds_url = [
     		'https://trustdentalcare.com/feed/',
-    		'https://trustdentalcare.com/feed/?paged=2',
-    		'https://trustdentalcare.com/feed/?paged=3',
-    		'https://trustdentalcare.com/feed/?paged=4',
     		'https://serenasandiegodentist.com/feed/',
     		'http://cosmeticdentistinsandiego.com/blog/feed/'];
 
@@ -224,7 +225,8 @@ function displayFeed($atts) {
 		array(
 			'pagination' => 'no',
 			'offset'	=> null,
-			'limit'	=> null
+			'limit'	=> null,
+			'source'	=> null
 			), $atts, 'Feed');
 
 	// new instance of paginator whith a mysql query like parameter
@@ -244,9 +246,13 @@ function displayFeed($atts) {
 		$limit = 6;
 	}
 
+
+	
 	// if offset atribute is set on the shortcode add this value and send it like param to getData() method
 	if ($atts['offset']) {
 		$results = $Paginator->getData($limit, $page, $atts['offset']);
+	} else if ($atts['source']) {
+		$results = $Paginator->getData($limit, $page, null, $atts['source']);
 	} else {
 		// else call the method getData() whitout offset parameter
 		$results = $Paginator->getData($limit, $page);
@@ -274,6 +280,7 @@ function displayFeed($atts) {
 	 if ($atts['pagination'] == 'yes') {
 		echo $Paginator->create_links(7, 'paginator_nums');
 	 }
+	 getFeed();
 
 }
 
