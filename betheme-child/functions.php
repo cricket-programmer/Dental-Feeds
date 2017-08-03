@@ -56,6 +56,28 @@ function mfnch_textdomain() {
 // require_once( get_stylesheet_directory() .'/includes/content-portfolio.php' );
 
 
+register_activation_hook(__FILE__, 'my_activation');
+
+function my_activation() {
+    if (! wp_next_scheduled ( 'my_hourly_event' )) {
+	wp_schedule_event(time(), 'hourly', 'my_hourly_event');
+    }
+}
+
+add_action('my_hourly_event', 'do_this_hourly');
+
+function do_this_hourly() {
+	// do something every hour
+	getFeed();
+}
+
+register_deactivation_hook(__FILE__, 'my_deactivation');
+
+function my_deactivation() {
+	wp_clear_scheduled_hook('my_hourly_event');
+}
+
+
 class Paginator {
 	private $_limit;
 	private $_page;
@@ -280,7 +302,7 @@ function displayFeed($atts) {
 	 if ($atts['pagination'] == 'yes') {
 		echo $Paginator->create_links(7, 'paginator_nums');
 	 }
-	 getFeed();
+	 // getFeed();
 
 }
 

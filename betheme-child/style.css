@@ -10,12 +10,12 @@ Version: 		1.6.1
 
 /* Theme customization starts here
 -------------------------------------------------------------- */
-.blog-teaser li:first-child {
+/*.blog-teaser li:first-child {
 	width: 67%;
 }
 .blog-teaser li:last-child {
 	margin-top: 0;
-}
+}*/
 
 .custom-header {
 	display: flex;
@@ -61,10 +61,10 @@ Version: 		1.6.1
 	float: none!important;
 }
 
-.blog-teaser .photo-wrapper img {
+/*.blog-teaser .photo-wrapper img {
 	max-width: none;
 	width: 100%;
-} 
+} */
 
 .posts > div {
 	display: flex;
