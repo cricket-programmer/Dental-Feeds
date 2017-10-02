@@ -18,6 +18,14 @@
 <!-- head -->
 <head>
 
+<!-- Google Tag Manager -->
+<script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+})(window,document,'script','dataLayer','GTM-5949XF9');</script>
+<!-- End Google Tag Manager -->
+
 <!-- meta -->
 <meta charset="<?php bloginfo( 'charset' ); ?>" />
 <?php 
@@ -45,6 +53,13 @@
 <!-- body -->
 <body <?php body_class(); ?>>
 	
+
+	<!-- Google Tag Manager (noscript) -->
+<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-5949XF9"
+height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+<!-- End Google Tag Manager (noscript) -->
+
+
 	<?php do_action( 'mfn_hook_top' ); ?>
 
 	<?php get_template_part( 'includes/header', 'sliding-area' ); ?>
@@ -79,23 +94,29 @@
 
 
 <div id="Top_bar" class="loading">
-
+	<div class="login">
+		<div class="container">
+			
+		</div>
+	</div>
 	<div class="container">
 		<div class="header-container">
 		
+
+			
+
 			<div class="custom-header">
 				<div class="contact">
-					<a href="#" class="tip">got a tip?</a>
-					<a href="mailto:">info@dentalfeeds.com</a>
-					<a href="#"><img src="/wp-content/themes/betheme-child/dental-feeds_social_1.png"></a>
-					<a href="#"><img src="/wp-content/themes/betheme-child/dental-feeds_social_2.png"></a>
-					<a href="#"><img src="/wp-content/themes/betheme-child/dental-feeds_social_3.png"></a>
+					<a href="https://www.facebook.com/dentalfeeds/">Fallow us on social media</a>
+					<a href="https://www.facebook.com/dentalfeeds/"><img src="/wp-content/themes/betheme-child/dental-feeds_social_1.png"></a>
+					<a href="https://www.instagram.com/dentalfeeds/"><img src="/wp-content/themes/betheme-child/dental-feeds_social_2.png"></a>
+					<a href="https://twitter.com/DentalFeeds"><img src="/wp-content/themes/betheme-child/dental-feeds_social_3.png"></a>
 					<a href="#"><img src="/wp-content/themes/betheme-child/dental-feeds_social_4.png"></a>
 				</div>
 				<!-- Logo -->
 				<a id="logo" href="http://dentalfeeds.com" title="Dental Feeds">
-					<img class="logo-main scale-with-grid" src="http://dentalfeeds.com/wp-content/uploads/2017/06/dental-feeds_logo_03.png" alt="dental-feeds_logo">
-					<img class="logo-mobile scale-with-grid" src="http://dentalfeeds.com/wp-content/uploads/2017/06/dental-feeds_logo_03.png" alt="dental-feeds_logo">
+					<img class="logo-main scale-with-grid" src="http://dentalfeeds.com/wp-content/uploads/2017/09/dental-feeds_home-sections_03-1.png" alt="dental-feeds_logo">
+					<img class="logo-mobile scale-with-grid" src="http://dentalfeeds.com/wp-content/uploads/2017/09/dental-feeds_home-sections_03-1.png" alt="dental-feeds_logo">
 				</a>
 					<!-- #searchform -->
 				<div class="search">
@@ -104,6 +125,9 @@
 		
 			</div>
 				<div class="menu_wrapper">
+
+
+
 					<?php 
 						if( ( mfn_header_style( true ) != 'header-overlay' ) && ( mfn_opts_get( 'menu-style' ) != 'hide' ) ){
 	
@@ -124,7 +148,27 @@
 							echo '</a>';
 							
 						}
-					?>					
+					?>
+					<div id="submit-post">
+						<a href="/got-a-tip">
+							SUBMIT YOUR POST! 
+						</a>
+
+							<?php if ( $user_ID ) { ?>
+			    			<!-- text that logged in users will see -->
+			    			<span><a href="<?php echo wp_logout_url( home_url() ); ?>" title="Logout">Logout</a></span>
+			    			<?php 
+			    				global $current_user;
+			      				get_currentuserinfo();
+			    				echo $current_user->display_name 
+			    			 ?>
+							<?php } else {   ?>
+						    <!-- here is a paragraph that is shown to anyone not logged in -->
+							<span><a href="<?php echo wp_login_url( home_url() ); ?>" title="Login">Login</a></span>
+
+						<?php } ?>		
+
+					</div>					
 				</div>			
 			
 			<?php 

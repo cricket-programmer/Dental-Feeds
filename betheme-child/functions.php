@@ -181,6 +181,7 @@ function getFeed() {
     $feeds_url = [
     		'https://trustdentalcare.com/feed/',
     		'https://serenasandiegodentist.com/feed/',
+    		'http://dentalfeeds.com/feed/',
     		'http://cosmeticdentistinsandiego.com/blog/feed/'];
 
     foreach ($feeds_url as $feed_url) {
@@ -291,6 +292,7 @@ function displayFeed($atts) {
 	 				<a href="<?=$post->link?>"><img src="<?=$post->image?>"></a>
 	 			</div>
 	 			<h4><a href="<?=$post->link?>"><?=$post->title?></a></h4>
+	 			<p><?php echo(substr($post->description, 0 ,150) . '...'); ?></p>
 	 			<span><a href="<?=$post->source?>"><?=$post->source?></a></span>
 	 		</div>
 	 	
@@ -302,7 +304,7 @@ function displayFeed($atts) {
 	 if ($atts['pagination'] == 'yes') {
 		echo $Paginator->create_links(7, 'paginator_nums');
 	 }
-	 // getFeed();
+	 getFeed();
 
 }
 
@@ -328,5 +330,4 @@ function getSource($url) {
 
 // short code to display feed
 add_shortcode( 'Feed', 'displayFeed' );
-
 

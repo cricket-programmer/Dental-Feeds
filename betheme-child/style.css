@@ -21,14 +21,14 @@ Version: 		1.6.1
 	display: flex;
     justify-content: space-around;
     align-items: center;
-    padding: 50px 0;
+    padding: 30px 0;
 }
 .custom-header .contact a {
 	color: #666;
     vertical-align: top;
 } 
 .custom-header .contact .tip {
-	background: #f73e4d;
+	background: #00adee;
 	color: #fff;
 	padding: 10px;
 	font-weight: bold;
@@ -39,6 +39,49 @@ Version: 		1.6.1
 .custom-header .contact a img {
 	margin: 0 2px;
 } 
+
+h2, h2 a, h2 a:hover {
+	color: #00adee;
+}
+
+@media screen and (max-width: 1240px) {
+	.custom-header .contact {
+		display: none;
+	}
+	.custom-header .search {
+		display: none;
+	}
+	#Top_bar a.responsive-menu-toggle {
+		top:45%!important;
+	}
+	.custom-header{
+		padding-bottom: 0!important;
+	}
+}
+@media only screen and (max-width: 1239px)
+{
+	#Top_bar #menu {
+    display: none;
+    height: auto;
+    width: 100%!important;
+    bottom: auto;
+    top: 70%!important; 
+    right: 1px;
+    position: relative!important;  
+    margin: 0;
+	}
+	#Top_bar #menu ul li {
+		padding: 0 20px;
+	}
+	#submit-post {
+    padding: 20px 20px!important;
+	}
+}
+@media screen and (max-width: 480px) {
+	#logo img {
+		width: 80%!important;
+	}
+}
 .custom-header .search form .icon_close,
 .custom-header .search form .icon_search {
 	display: none;
@@ -52,13 +95,24 @@ Version: 		1.6.1
 }
 #Top_bar .menu > li > a {
     padding: 0px 0!important;
-    color: #f73e4d!important;
 }
 #Top_bar .menu > li a:after {
-    background: #f73e4d!important;
+    background: #00adee!important;
+}
+#Top_bar .current-menu-item a {
+	color: #00adee!important;
 }
 .header-container .menu_wrapper {
 	float: none!important;
+}
+#submit-post {
+	float: right;
+	padding: 20px 0;
+}
+#submit-post>a {
+	color: #00adee;
+    font-weight: bold;
+    margin-right: 20px;
 }
 
 /*.blog-teaser .photo-wrapper img {
@@ -93,10 +147,13 @@ Version: 		1.6.1
 .posts .post h4 {
 	padding: 10px 20px;
     font-size: 1.8em;
-    color: #f73e4d;
+    color: #00adee;
+}
+.posts .post p {
+	padding: 0 20px;
 }
 .posts .post h4 a {
-	color: #f73e4d!important;
+	color: #00adee!important;
 }
 .posts .post span {
 	padding: 10px 20px;
@@ -107,10 +164,21 @@ Version: 		1.6.1
 .paginator_nums li {
 	display: inline-block;
     padding: 5px 10px;
-    background: #f73e4d;
+    background: #00adee;
     margin: 5px;
 }
 .paginator_nums li a {
 	color: #fff!important;
 	padding: 5px 10px;
+}
+
+
+#Footer {
+    background-color: #131b22!important;
+}
+#Footer a {
+	color: #fff!important;
+}
+#Footer .footer_copy {
+	border: none!important;
 }
